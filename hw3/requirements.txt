@@ -1,0 +1,5 @@
+prefect==2.0b5
+scikit-learn==1.1.1
+pandas==1.4.2
+fastparquet==0.8.1
+mlflow==1.26.1

@@ -2,3 +2,7 @@
 *mlruns*
 *.db
 *artifacts*
+.venv
+venv
+models
+hw3/prefect_storage
