@@ -11,7 +11,7 @@ from sklearn.metrics import mean_squared_error
 from prefect import flow, task, get_run_logger
 from prefect.task_runners import SequentialTaskRunner
 from prefect.deployments import DeploymentSpec
-from prefect.orion.schemas.schedules import CronSchedule, IntervalSchedule
+from prefect.orion.schemas.schedules import CronSchedule
 from prefect.flow_runners import SubprocessFlowRunner
 
 
@@ -89,7 +89,7 @@ def run_model(df, categorical, dv, lr):
     return
 
 
-@flow
+@flow(task_runner=SequentialTaskRunner())
 def main(date: datetime = None):
 
     mlflow.set_tracking_uri("http://127.0.0.1:3000")
@@ -117,8 +117,8 @@ def main(date: datetime = None):
 
 
 DeploymentSpec(
-    name="interval-deployment",
+    name="cron-deployment",
     flow=main,
-    schedule=IntervalSchedule(interval=timedelta(minutes=3)),
+    schedule=CronSchedule(cron="0 9 15 * *"),
     flow_runner=SubprocessFlowRunner()
 )
